@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
+using TMPro;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -14,13 +16,20 @@ public class PlayerController : MonoBehaviour
     Rigidbody2D rb2d;
     SurfaceEffector2D SurfaceEffect2d;
 
+    [SerializeField] TextMeshProUGUI PointSystem;
+
     bool canMove = true;
     float slowTime = 0f;
+    int pointsPerCoin = 100;
+    int coinCount = 0;
+    int points;
+    int coins;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        PointSystem.text = "0 Pts";
         rb2d = GetComponent <Rigidbody2D>();
         SurfaceEffect2d = FindAnyObjectByType<SurfaceEffector2D>();
     }
@@ -86,8 +95,19 @@ public class PlayerController : MonoBehaviour
         {
             ApplySlow();
         }
+       
+        if (other.CompareTag("Coin"))
+        {
+            coins++;
+            points += pointsPerCoin;
+            Destroy(other.gameObject);
+            Debug.Log("Coins: " + coins + "points: " + points);
+            PointSystem.text = points + "Pts";
+        }
 
-        
+       
+
+
     }
 
 
