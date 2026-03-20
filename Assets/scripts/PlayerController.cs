@@ -1,11 +1,15 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    [Header("Movement")]
     [SerializeField] float TorqueAmmount = 10f;
-
     [SerializeField] float NormalSpeed = 15f;
     [SerializeField] float BoostSpeed = 20f;
+    [SerializeField] float SlowSpeed = 5f;
+    [SerializeField] float TimeOfSlow = 5f;
 
     Rigidbody2D rb2d;
     SurfaceEffector2D SurfaceEffect2d;
@@ -23,6 +27,8 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
+        Debug.Log(SurfaceEffect2d.speed);
         if (canMove)
         {
             RotatePlayer();
@@ -57,5 +63,27 @@ public class PlayerController : MonoBehaviour
     {
         canMove = false;
     }
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("Slow"))
+        {  
+            StartCoroutine(Slow());
+        }
+
+        
+    }
+    IEnumerator Slow()
+    {
+        float originalSpeed = NormalSpeed;
+
+        NormalSpeed = SlowSpeed;
+
+        yield return new WaitForSeconds(TimeOfSlow);
+
+        NormalSpeed = originalSpeed;
+    }
+
+
 }
 
