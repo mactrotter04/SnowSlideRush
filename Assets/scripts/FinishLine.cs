@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 public class FinishLine : MonoBehaviour
 {
     [SerializeField] ParticleSystem FinishEffect;
-    [SerializeField] float LoadDelay = 2f;
+    //[SerializeField] float LoadDelay = 2f;
     
 
     AudioSource audioSource;
@@ -19,7 +19,7 @@ public class FinishLine : MonoBehaviour
         {
             Debug.Log("You Win!");
             FinishEffect.Play();
-            //GetComponent<AudioSource>().Play();
+            GetComponent<AudioSource>().Play();
             audioSource.Play();
             Invoke(nameof(LoadNextScene), 1f);
         }

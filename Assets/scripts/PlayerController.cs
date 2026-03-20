@@ -21,7 +21,6 @@ public class PlayerController : MonoBehaviour
     bool canMove = true;
     float slowTime = 0f;
     int pointsPerCoin = 100;
-    int coinCount = 0;
     int points;
     int coins;
 
@@ -98,8 +97,10 @@ public class PlayerController : MonoBehaviour
        
         if (other.CompareTag("Coin"))
         {
+            if (!other.gameObject.activeSelf) return;
             coins++;
             points += pointsPerCoin;
+            other.gameObject.SetActive(false);
             Destroy(other.gameObject);
             Debug.Log("Coins: " + coins + "points: " + points);
             PointSystem.text = points + "Pts";
