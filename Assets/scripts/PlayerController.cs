@@ -15,6 +15,7 @@ public class PlayerController : MonoBehaviour
     SurfaceEffector2D SurfaceEffect2d;
 
     bool canMove = true;
+    float slowTime = 0f;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -49,7 +50,17 @@ public class PlayerController : MonoBehaviour
 
     void Respond2Boost()
     {
-        if(Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow))
+        if(slowTime > 0)
+        {
+            slowTime -= Time.deltaTime;
+        }
+
+        if (slowTime >0)
+        {
+            SurfaceEffect2d.speed = SlowSpeed;
+        }
+
+        else if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow))
         {
             SurfaceEffect2d.speed = BoostSpeed;
         }
@@ -64,25 +75,21 @@ public class PlayerController : MonoBehaviour
         canMove = false;
     }
 
+    public void ApplySlow()
+    {
+        slowTime = TimeOfSlow;
+    }
+
     void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Slow"))
-        {  
-            StartCoroutine(Slow());
+        {
+            ApplySlow();
         }
 
         
     }
-    IEnumerator Slow()
-    {
-        float originalSpeed = NormalSpeed;
 
-        NormalSpeed = SlowSpeed;
-
-        yield return new WaitForSeconds(TimeOfSlow);
-
-        NormalSpeed = originalSpeed;
-    }
 
 
 }
